@@ -1,10 +1,13 @@
 import { NewDataEntry, Weather, Visibility } from "./types"
 
-const toNewDiaryEntry = (object: unknown): NewDataEntry => {
+type Fields = {comment: unknown, date: unknown, weather: unknown, visibility: unknown}
+
+const toNewDiaryEntry = ({comment, date, weather, visibility}: Fields): NewDataEntry => {
     const newEntry: NewDataEntry = {
-        date: "",
-        weather: Weather.Sunny,
-        visibility: Visibility.Great
+        comment: parseComment(comment),
+        date: parseDate(date),
+        weather: parseWeather(weather),
+        visibility: parseVisibility(visibility)
     }
     return newEntry
 }
@@ -51,7 +54,7 @@ const isVisibility = (params: any): params is Visibility => {
 
 const parseVisibility = (visibility: unknown): Visibility => {
     if (!visibility || !isVisibility(visibility)) {
-        throw new Error("Incorrect or missing visibility")
+        throw new Error("Incorrect or missing visibility: " + visibility)
     }
 
     return visibility
